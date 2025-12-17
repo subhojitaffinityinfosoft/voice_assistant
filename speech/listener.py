@@ -1,23 +1,18 @@
 import sounddevice as sd
 import queue
 
-
 q = queue.Queue()
 
-
-
-
 def callback(indata, frames, time, status):
-    q.put(bytes(indata))
+    if status:
+        print(status)
+    q.put(indata.copy())
 
-
-
-
-def start_stream(sample_rate):
- return sd.RawInputStream(
-samplerate=sample_rate,
-blocksize=8000,
-dtype='int16',
-channels=1,
-callback=callback
-)
+def start_stream(sample_rate, device):
+    return sd.InputStream(
+        samplerate=sample_rate,
+        device=device,
+        channels=1,
+        dtype="int16",
+        callback=callback
+    )

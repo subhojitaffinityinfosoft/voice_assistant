@@ -1,14 +1,15 @@
-from brain.offline_intents import handle
-from brain.online_intents import online_intent
+# brain/intent_router.py
+from speech.tts import speak
+import wikipedia
 
-def route(text):
-    """
-    Decide whether command is offline or online AI search
-    """
-    text_lower = text.lower()
-    offline_keywords = ["time", "hello", "hi", "light", "stop"]
-
-    if any(k in text_lower for k in offline_keywords):
-        handle(text)
+def route(command):
+    command = command.lower()
+    if "who is" in command:
+        try:
+            person = command.replace("who is", "").strip()
+            result = wikipedia.summary(person, sentences=2)
+            speak(result)
+        except Exception as e:
+            speak("Sorry, I could not find that.")
     else:
-        online_intent(text)  # Wikipedia voice search
+        speak("I can only answer 'who is' questions for now.")
