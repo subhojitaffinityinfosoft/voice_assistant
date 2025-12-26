@@ -1,15 +1,15 @@
-# brain/intent_router.py
 from speech.tts import speak
-import wikipedia
 
-def route(command):
-    command = command.lower()
-    if "who is" in command:
-        try:
-            person = command.replace("who is", "").strip()
-            result = wikipedia.summary(person, sentences=2)
-            speak(result)
-        except Exception as e:
-            speak("Sorry, I could not find that.")
-    else:
-        speak("I can only answer 'who is' questions for now.")
+def route(text):
+    if "who is virat kohli" in text:
+        speak(
+            "Virat Kohli is an Indian international cricketer "
+            "and former captain of the Indian cricket team."
+        )
+        return
+
+    if "open youtube" in text:
+        speak("Opening YouTube")
+        return
+
+    speak("Sorry, I did not understand.")
